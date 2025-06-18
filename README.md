@@ -63,8 +63,8 @@ You can also watch indivisual files:
 const fileWatcher = await overwatch.watchFile('src/config.json');
 ```
 
-### 2. Listening to events
-You can attach a general listener for all change events:
+### 2. Handling events
+You can attach a general handler for all change events:
 
 ```ts
 // Handles all the watcher's events
@@ -92,7 +92,7 @@ projectWatcher.onChange(({ type, event }) => {
 });
 ```
 
-Or, register dedicated listeners for specific events:
+Or, register dedicated handlers for specific events:
 
 ```ts
 projectWatcher.onAdd((path) => {
