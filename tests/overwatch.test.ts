@@ -49,4 +49,15 @@ describe('Overwatch', () => {
 
         expect(triggered).toBe(false);
     });
+
+    it('can define handlers upon creating the watcher', async () => {
+        await overwatch.watch(testDir, {
+            onUpdate: (event) => {
+                expect(event.path).toBe(utils.normalizePath(testFile));
+                expect(event.type).toBe('File');
+            }
+        })
+
+        await fs.writeFile(testFile, 'updated');
+    })
 });

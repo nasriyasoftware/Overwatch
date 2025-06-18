@@ -162,14 +162,12 @@ class Overwatch {
     }
 
     /**
-     * Watches a specific file or folder for changes. This method is internally used by
-     * `watchFile` and `watchFolder` and handles all registration logic with the VOM.
+     * Registers a watcher for the specified path, which can be a file or directory.
      *
-     * @param path_ - The absolute or relative path to the file or folder to watch.
+     * @param path_ - The absolute or relative path to the file or directory to watch.
      *                The path will be resolved and normalized before being tracked.
-     * @param options - Optional filtering options to include or exclude specific files or folders.
-     *                  These only take effect if the path points to a directory.
-     *                  All filter rules (both strings and RegExp) are matched against the **absolute normalized paths** of files and subfolders.
+     * @param options - Optional configuration options for the watcher.
+     *                  If watching a directory, you can specify filters to include or exclude specific paths.
      * @returns A `Watcher` instance for the specified path.
      * @throws Will throw an error if the path does not exist or cannot be resolved.
      */
@@ -201,10 +199,12 @@ class Overwatch {
      *
      * @param path_ - The absolute or relative path to the file to watch.
      *                The path will be resolved and normalized before being tracked.
-     * @returns A `Watcher` instance for the file.
-     * @throws Will throw an error if the path is invalid or not a file.
+     * @param options - Optional configuration options excluding `exclude` and `include` filters.
+     *                  These filters are irrelevant since a file is not a directory.
+     * @returns A `Watcher` instance for the specified file.
+     * @throws Will throw an error if the path does not exist or cannot be resolved.
      */
-    async watchFile(path_: string) {
+    async watchFile(path_: string, options?: Exclude<WatchOptions, 'exclude' | 'include'>) {
         try {
             const watcher = await this.watch(path_);
             return watcher;
@@ -214,17 +214,15 @@ class Overwatch {
         }
     }
 
+
     /**
-     * Registers a watcher for the specified folder path, with optional filtering rules
-     * to control which files or folders inside it should trigger change events.
+     * Registers a watcher for the specified directory path.
      *
-     * @param path_ - The absolute or relative path to the folder to watch.
+     * @param path_ - The absolute or relative path to the directory to watch.
      *                The path will be resolved and normalized before being tracked.
-     * @param options - Filtering options to include or exclude specific paths.
-     *                  Filter rules may be exact strings or regular expressions,
-     *                  and are matched against the **absolute normalized path** of each affected file or folder.
-     * @returns A `Watcher` instance for the folder.
-     * @throws Will throw an error if the path is invalid or not a directory.
+     * @param options - Optional configuration options including filters to restrict which files and folders are watched.
+     * @returns A `Watcher` instance for the specified directory.
+     * @throws Will throw an error if the path does not exist or cannot be resolved.
      */
     async watchFolder(path_: string, options?: WatchOptions) {
         try {

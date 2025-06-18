@@ -4,7 +4,7 @@ import { onWatchedDataAddHandler, onWatchedDataChangeHandler, onWatchedDataRemov
 class Watcher {
     #_path: string;
     readonly #_type: 'File' | 'Directory';
-    readonly #_filters: Required<WatchOptions> = { include: [], exclude: [] }
+    readonly #_filters: Pick<Required<WatchOptions>, 'include' | 'exclude'> = { include: [], exclude: [] }
     readonly #_userEvents = {
         onUpdate: (() => { }) as OnWatchedDataUpdateHandler,
         onRemove: (() => { }) as onWatchedDataRemoveHandler,
@@ -43,6 +43,30 @@ class Watcher {
 
         this.#_filters.include = this.#_filters.include.map(rule => this.#_helpers.normalizeFilterRule(rule));
         this.#_filters.exclude = this.#_filters.exclude.map(rule => this.#_helpers.normalizeFilterRule(rule));
+
+        if (utils.hasOwnProperty(watchOptions, 'onChange')) {
+            this.onChange(watchOptions?.onChange!);
+        }
+
+        if (utils.hasOwnProperty(watchOptions, 'onUpdate')) {
+            this.onUpdate(watchOptions?.onUpdate!);
+        }
+
+        if (utils.hasOwnProperty(watchOptions, 'onRemove')) {
+            this.onRemove(watchOptions?.onRemove!);
+        }
+
+        if (utils.hasOwnProperty(watchOptions, 'onRename')) {
+            this.onRename(watchOptions?.onRename!);
+        }
+
+        if (utils.hasOwnProperty(watchOptions, 'onAdd')) {
+            this.onAdd(watchOptions?.onAdd!);
+        }
+
+        if (utils.hasOwnProperty(watchOptions, 'onRootRemoved')) {
+            this.onRootRemoved(watchOptions?.onRootRemoved!);
+        }
     }
 
     /**

@@ -1,6 +1,12 @@
 export interface WatchOptions {
     include?: (RegExp | string)[];
     exclude?: (RegExp | string)[];
+    onChange?: onWatchedDataChangeHandler;
+    onUpdate?: OnWatchedDataUpdateHandler;
+    onRemove?: onWatchedDataRemoveHandler;
+    onRename?: onWatchedDataRenameHandler;
+    onAdd?: onWatchedDataAddHandler;
+    onRootRemoved?: () => any | Promise<any>;
 }
 
 export type OnWatchedDataUpdateHandler = (event: UpdateEvent) => any | Promise<any>;

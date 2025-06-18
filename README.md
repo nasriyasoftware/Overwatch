@@ -112,6 +112,17 @@ projectWatcher.onUpdate((event) => {
 });
 ```
 
+You can also pass the handlers when you create the watcher:
+```ts
+const projectWatcher = await overwatch.watchFolder(process.cwd(), {
+   include: ['**/*.ts'], // Accepts globs, regex, or absolute paths
+   exclude: [/node_modules/, '**/*.test.ts'],
+   onRename: (event) => {
+        console.log(`${event.type} renamed: ${event.oldPath} -> ${event.newPath}`);
+   }
+});
+```
+
 ### 3. Handling Root Deletion
 If the root directory being watched is deleted, a special event is triggered:
 
