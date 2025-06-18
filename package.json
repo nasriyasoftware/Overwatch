@@ -1,0 +1,63 @@
+{
+  "name": "@nasriya/overwatch",
+  "version": "1.0.0",
+  "description": "A high-performance, dependency-free file system watcher that monitors file and directory changes efficiently across platforms.",
+  "keywords": [
+    "file watcher",
+    "filesystem watcher",
+    "file system",
+    "watch files",
+    "watcher",
+    "nodejs",
+    "file change",
+    "fs watch",
+    "cross-platform",
+    "node",
+    "file monitor",
+    "file system events",
+    "watch files and folders",
+    "file change detection"
+  ],
+  "type": "module",
+  "main": "./dist/cjs/overwatch.js",
+  "module": "./dist/esm/overwatch.js",
+  "types": "./dist/@types/overwatch.d.ts",
+  "files": [
+    "dist/**/*"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/esm/overwatch.js",
+      "require": "./dist/cjs/overwatch.js",
+      "types": "./dist/@types/overwatch.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "npm run build:esm && npm run build:cjs && postbuild",
+    "build:esm": "tsc --project tsconfig.esm.json",
+    "build:cjs": "tsc --project tsconfig.cjs.json",
+    "postbuild-init": "postbuild-init",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "github",
+    "url": "https://github.com/nasriyasoftware/Overwatch"
+  },
+  "bugs": {
+    "url": "https://github.com/nasriyasoftware/Overwatch/issues"
+  },
+  "homepage": "https://package.nasriya.net/Overwatch",
+  "funding": {
+    "type": "individual",
+    "url": "https://fund.nasriya.net/"
+  },
+  "license": "SEE LICENSE IN LICENSE",
+  "author": "Nasriya Software",
+  "devDependencies": {
+    "@nasriya/postbuild": "^1.1.5",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.0.3",
+    "jest": "^30.0.0",
+    "ts-jest": "^29.4.0"
+  }
+}
