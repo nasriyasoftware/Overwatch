@@ -1,7 +1,7 @@
 [![N|Solid](https://static.wixstatic.com/media/72ffe6_da8d2142d49c42b29c96ba80c8a91a6c~mv2.png)](https://nasriya.net)
 
 # Overwatch.
-[![NPM License](https://img.shields.io/npm/l/%40nasriya%2Foverwatch?color=lightgreen)](https://github.com/nasriyasoftware/Overwatch?tab=License-1-ov-file) ![Repository Size](https://img.shields.io/github/repo-size/nasriyasoftware/Overwatch.svg) ![Last Commit](https://img.shields.io/github/last-commit/nasriyasoftware/Overwatch.svg) [![Status](https://img.shields.io/badge/Status-Stable-green.svg)](link-to-your-status-page)
+[![NPM License](https://img.shields.io/npm/l/%40nasriya%2Foverwatch?color=lightgreen)](https://github.com/nasriyasoftware/Overwatch?tab=License-1-ov-file) ![NPM Version](https://img.shields.io/npm/v/%40nasriya%2Foverwatch) ![NPM Unpacked Size](https://img.shields.io/npm/unpacked-size/%40nasriya%2Foverwatch) ![Last Commit](https://img.shields.io/github/last-commit/nasriyasoftware/Overwatch.svg) [![Status](https://img.shields.io/badge/Status-Stable-green.svg)](link-to-your-status-page)
 
 ##### Visit us at [www.nasriya.net](https://nasriya.net).
 
