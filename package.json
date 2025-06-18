@@ -1,6 +1,6 @@
 {
   "name": "@nasriya/overwatch",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A high-performance, dependency-free file system watcher that monitors file and directory changes efficiently across platforms.",
   "keywords": [
     "file watcher",
@@ -51,7 +51,7 @@
     "type": "individual",
     "url": "https://fund.nasriya.net/"
   },
-  "license": "SEE LICENSE IN LICENSE",
+  "license": "Nasriya Open License (NOL)",
   "author": "Nasriya Software",
   "devDependencies": {
     "@nasriya/postbuild": "^1.1.5",
