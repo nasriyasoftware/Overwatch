@@ -1,6 +1,6 @@
 {
   "name": "@nasriya/overwatch",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A high-performance, dependency-free file system watcher that monitors file and directory changes efficiently across platforms.",
   "keywords": [
     "file watcher",
