@@ -16,48 +16,99 @@ class Utils {
         const flags = options?.flags ?? '';
         let re = '';
         let inGroup = false;
+        let escaping = false;
 
         for (let i = 0; i < glob.length; i++) {
             const char = glob[i];
 
-            if ('^$+?.()=!|'.includes(char)) {
+            // Handle escaped characters (e.g., \*, \?, \{, etc.)
+            if (escaping) {
                 re += '\\' + char;
-            } else if (char === '*') {
-                const prev = glob[i - 1];
-                let starCount = 1;
-                while (glob[i + 1] === '*') {
-                    i++;
-                    starCount++;
-                }
-                const next = glob[i + 1];
+                escaping = false;
+                continue;
+            }
 
-                const isGlobstar =
-                    globstar && starCount > 1 && (prev === '/' || prev === undefined) && (next === '/' || next === undefined);
+            if (char === '\\') {
+                escaping = true;
+                continue;
+            }
 
-                if (isGlobstar) {
-                    re += '((?:[^\\/]*(?:\\/|$))*)';
-                    if (next === '/') i++; // skip slash after globstar
-                } else {
-                    re += '[^\\/]*';
+            switch (char) {
+                case '/':
+                    re += '\\/';
+                    break;
+
+                case '.':
+                case '+':
+                case '^':
+                case '$':
+                case '!':
+                case '=':
+                case '|':
+                case '(':
+                case ')':
+                    re += '\\' + char;
+                    break;
+
+                case '*': {
+                    const prev = glob[i - 1];
+                    let starCount = 1;
+
+                    while (glob[i + 1] === '*') {
+                        i++;
+                        starCount++;
+                    }
+
+                    const next = glob[i + 1];
+                    const isGlobstar =
+                        globstar &&
+                        starCount > 1 &&
+                        (prev === '/' || prev === undefined) &&
+                        (next === '/' || next === undefined);
+
+                    if (isGlobstar) {
+                        re += '((?:[^\\/]*(?:\\/|$))*)';
+                        if (next === '/') i++; // skip slash after globstar
+                    } else {
+                        re += '[^\\/]*';
+                    }
+
+                    break;
                 }
-            } else if (char === '?') {
-                re += '.';
-            } else if (char === '{') {
-                inGroup = true;
-                re += '(';
-            } else if (char === '}') {
-                inGroup = false;
-                re += ')';
-            } else if (char === ',' && inGroup) {
-                re += '|';
-            } else if ('[]\\'.includes(char)) {
-                re += '\\' + char;
-            } else {
-                re += char === '/' ? '\\/' : char;
+
+                case '?':
+                    re += '.';
+                    break;
+
+                case '{':
+                    inGroup = true;
+                    re += '(';
+                    break;
+
+                case '}':
+                    inGroup = false;
+                    re += ')';
+                    break;
+
+                case ',':
+                    re += inGroup ? '|' : ',';
+                    break;
+
+                // allow valid character classes (e.g., [jt])
+                case '[':
+                case ']':
+                    re += char;
+                    break;
+
+                default:
+                    re += char;
+                    break;
             }
         }
 
-        return new RegExp(flags.includes('g') ? re : `^${re}$`, flags);
+        // Only anchor if not global, to behave like globs
+        const anchored = flags.includes('g') ? re : `^${re}$`;
+        return new RegExp(anchored, flags);
     }
 
     /**
