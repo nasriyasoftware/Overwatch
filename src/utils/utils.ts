@@ -146,7 +146,6 @@ class Utils {
      * @param path_ The path to normalize.
      * @returns The normalized path.
      */
-
     normalizePath(path_: string) {
         const resolved = path.resolve(path_);
         return this.isWindows() ? resolved.toLowerCase() : resolved;
