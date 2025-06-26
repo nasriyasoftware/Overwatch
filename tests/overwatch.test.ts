@@ -28,7 +28,7 @@ describe('Overwatch', () => {
             fs.writeFile(testFile, 'updated');
         });
 
-        expect(event.path).toBe(utils.normalizePath(testFile));
+        expect(event.path).toBe(atomix.path.normalizePath(testFile));
         expect(event.type).toBe('File');
     });
 
@@ -53,7 +53,7 @@ describe('Overwatch', () => {
     it('can define handlers upon creating the watcher', async () => {
         await overwatch.watch(testDir, {
             onUpdate: (event) => {
-                expect(event.path).toBe(utils.normalizePath(testFile));
+                expect(event.path).toBe(atomix.path.normalizePath(testFile));
                 expect(event.type).toBe('File');
             }
         })

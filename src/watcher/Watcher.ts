@@ -1,4 +1,4 @@
-import utils from "../utils/utils";
+import atomix from "@nasriya/atomix";
 import { onWatchedDataAddHandler, onWatchedDataChangeHandler, onWatchedDataRemoveHandler, onWatchedDataRenameHandler, OnWatchedDataUpdateHandler, WatchOptions } from "../docs/docs";
 
 class Watcher {
@@ -22,10 +22,10 @@ class Watcher {
         */
         normalizeFilterRule(rule: string | RegExp): string | RegExp {
             if (typeof rule === 'string') {
-                if (utils.isGlobLike(rule)) {
-                    return utils.globToRegExp(rule);
+                if (atomix.dataTypes.regex.guard.isGlobLike(rule)) {
+                    return atomix.dataTypes.regex.globToRegExp(rule);
                 } else {
-                    return utils.normalizePath(rule);
+                    return atomix.path.normalizePath(rule);
                 }
             }
             return rule;
@@ -43,28 +43,29 @@ class Watcher {
 
         this.#_filters.include = this.#_filters.include.map(rule => this.#_helpers.normalizeFilterRule(rule));
         this.#_filters.exclude = this.#_filters.exclude.map(rule => this.#_helpers.normalizeFilterRule(rule));
-
-        if (utils.hasOwnProperty(watchOptions, 'onChange')) {
+        const hasOwnProperty = atomix.dataTypes.record.hasOwnProperty;
+        
+        if (hasOwnProperty(watchOptions, 'onChange')) {
             this.onChange(watchOptions?.onChange!);
         }
 
-        if (utils.hasOwnProperty(watchOptions, 'onUpdate')) {
+        if (hasOwnProperty(watchOptions, 'onUpdate')) {
             this.onUpdate(watchOptions?.onUpdate!);
         }
 
-        if (utils.hasOwnProperty(watchOptions, 'onRemove')) {
+        if (hasOwnProperty(watchOptions, 'onRemove')) {
             this.onRemove(watchOptions?.onRemove!);
         }
 
-        if (utils.hasOwnProperty(watchOptions, 'onRename')) {
+        if (hasOwnProperty(watchOptions, 'onRename')) {
             this.onRename(watchOptions?.onRename!);
         }
 
-        if (utils.hasOwnProperty(watchOptions, 'onAdd')) {
+        if (hasOwnProperty(watchOptions, 'onAdd')) {
             this.onAdd(watchOptions?.onAdd!);
         }
 
-        if (utils.hasOwnProperty(watchOptions, 'onRootRemoved')) {
+        if (hasOwnProperty(watchOptions, 'onRootRemoved')) {
             this.onRootRemoved(watchOptions?.onRootRemoved!);
         }
     }

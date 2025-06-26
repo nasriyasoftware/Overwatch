@@ -1,10 +1,28 @@
+import atomix from "@nasriya/atomix";
 import VirtualObjectManager from "./vom/vom";
 import Watcher from "./watcher/Watcher";
 import eventsManager from "./events/manager";
-import utils from "./utils/utils";
-import { WatchOptions } from "./docs/docs";
-import fs from "fs";
 import path from "path";
+import fs from "fs";
+import { WatchOptions } from "./docs/docs";
+
+export type {
+    WatchOptions,
+    OnWatchedDataUpdateHandler,
+    onWatchedDataRemoveHandler,
+    onWatchedDataRenameHandler,
+    onWatchedDataAddHandler,
+    WatchedDataChangeEvent,
+    onWatchedDataChangeHandler,
+    RenameEvent,
+    UpdateEvent,
+    RemoveEvent,
+    AddEvent,
+    ChangeEvent,
+    WatchedFile,
+    WatchedFolder,
+    WatchedData
+} from './docs/docs';
 
 class Overwatch {
     readonly #_vom = new VirtualObjectManager();
@@ -36,8 +54,9 @@ class Overwatch {
         validateWatchOptions: (options?: WatchOptions) => {
             if (options === undefined) { return }
             if (typeof options !== 'object') { throw new TypeError('options must be an object.'); }
+            const hasOwnProperty = atomix.dataTypes.record.hasOwnProperty;
 
-            if ('include' in options && utils.hasOwnProperty(options, 'include')) {
+            if ('include' in options && hasOwnProperty(options, 'include')) {
                 if (!Array.isArray(options.include)) { throw new TypeError('options.include (when provided) must be an array.'); }
                 for (const item of options.include) {
                     if (typeof item === 'string' || item instanceof RegExp) { continue; }
@@ -45,7 +64,7 @@ class Overwatch {
                 }
             }
 
-            if ('exclude' in options && utils.hasOwnProperty(options, 'exclude')) {
+            if ('exclude' in options && hasOwnProperty(options, 'exclude')) {
                 if (!Array.isArray(options.exclude)) { throw new TypeError('options.exclude (when provided) must be an array.'); }
                 for (const item of options.exclude) {
                     if (typeof item === 'string' || item instanceof RegExp) { continue; }
@@ -173,7 +192,7 @@ class Overwatch {
      */
     async watch(path_: string, options?: WatchOptions) {
         try {
-            const resolvedPath = utils.normalizePath(path_);
+            const resolvedPath = atomix.path.normalizePath(path_);
             const isFile = fs.statSync(resolvedPath).isFile();
             const directory = isFile ? path.dirname(resolvedPath) : resolvedPath;
             this.#_helpers.validateWatchOptions(options);

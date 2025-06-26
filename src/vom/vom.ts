@@ -1,7 +1,7 @@
+import atomix from "@nasriya/atomix";
 import Snapshot from "./snapshot";
-import path from "path";
-import utils from "../utils/utils";
 import eventsManager from "../events/manager";
+import path from "path";
 
 class VirtualObjectManager {
     readonly #_snapshots: Map<string, Snapshot> = new Map();
@@ -47,7 +47,7 @@ class VirtualObjectManager {
 
     readonly #_helpers = {
         getCoveringSnapshot: (path_: string): Snapshot | undefined => {
-            const isWin = utils.isWindows();
+            const isWin = atomix.runtime.platform.isWindows();
             let currentPath = path_;
 
             while (true) {
@@ -77,7 +77,7 @@ class VirtualObjectManager {
      * @returns A Promise that resolves with the closest parent snapshot of the given path.
      */
     async snapshot(path_: string): Promise<Snapshot> {
-        const originalPath = utils.normalizePath(path_);
+        const originalPath = atomix.path.normalizePath(path_);
         const snapshot = this.#_helpers.getCoveringSnapshot(originalPath);
 
         if (snapshot) {
