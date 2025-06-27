@@ -54,8 +54,8 @@ class Overwatch {
         validateWatchOptions: (options?: WatchOptions) => {
             if (options === undefined) { return }
             if (typeof options !== 'object') { throw new TypeError('options must be an object.'); }
-            const hasOwnProperty = atomix.dataTypes.record.hasOwnProperty;
-
+            const hasOwnProperty = atomix.dataTypes.record.hasOwnProperty.bind(atomix.dataTypes.record);
+            
             if ('include' in options && hasOwnProperty(options, 'include')) {
                 if (!Array.isArray(options.include)) { throw new TypeError('options.include (when provided) must be an array.'); }
                 for (const item of options.include) {
@@ -225,7 +225,7 @@ class Overwatch {
      */
     async watchFile(path_: string, options?: Exclude<WatchOptions, 'exclude' | 'include'>) {
         try {
-            const watcher = await this.watch(path_);
+            const watcher = await this.watch(path_, options);
             return watcher;
         } catch (error) {
             if (error instanceof Error) { error.message = `[Overwatch] Unable to watch ${path_}: ${error.message}` }

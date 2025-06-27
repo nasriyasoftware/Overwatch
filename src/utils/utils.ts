@@ -1,7 +1,7 @@
 import atomix from "@nasriya/atomix";
 import { WatchedData, WatchedFile, WatchedFolder } from "../docs/docs";
 
-const hasOwnProperty = atomix.dataTypes.record.hasOwnProperty;
+const hasOwnProperty = atomix.dataTypes.record.hasOwnProperty.bind(atomix.dataTypes.record);
 
 class Utils {
     /**

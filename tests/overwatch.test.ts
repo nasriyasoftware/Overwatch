@@ -1,10 +1,10 @@
+import atomix from '@nasriya/atomix';
 import overwatch from '../src/overwatch';
-import fs from 'fs/promises';
-import path from 'path';
+import eventsManager from '../src/events/manager';
 import { tmpdir } from 'os';
 import { UpdateEvent } from '../src/docs/docs';
-import utils from '../src/utils/utils';
-import eventsManager from '../src/events/manager';
+import fs from 'fs/promises';
+import path from 'path';
 
 describe('Overwatch', () => {
     const testDir = path.join(tmpdir(), 'overwatch-test');
