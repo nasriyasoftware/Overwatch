@@ -39,6 +39,13 @@
     "postbuild-init": "postbuild-init",
     "test": "jest --detectOpenHandles"
   },
+  "maintainers": [
+    {
+      "name": "Ahmad Nasriya",
+      "email": "ahmad@nasriya.net",
+      "url": "https://www.linkedin.com/in/ahmadnasriya/"
+    }
+  ],
   "repository": {
     "type": "github",
     "url": "https://github.com/nasriyasoftware/Overwatch"
