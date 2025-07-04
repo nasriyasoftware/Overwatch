@@ -1,7 +1,7 @@
 import atomix from "@nasriya/atomix";
 import { onWatchedDataAddHandler, onWatchedDataChangeHandler, onWatchedDataRemoveHandler, onWatchedDataRenameHandler, OnWatchedDataUpdateHandler, WatchOptions } from "../docs/docs";
 
-class Watcher {
+export class Watcher {
     #_path: string;
     readonly #_type: 'File' | 'Directory';
     readonly #_filters: Pick<Required<WatchOptions>, 'include' | 'exclude'> = { include: [], exclude: [] }

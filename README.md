@@ -142,8 +142,9 @@ projectWatcher.onRootRemoved(() => {
 - 🧠 Each watcher allows **only one handler per event type** — setting a new handler (e.g., via `onChange`) will **replace** the previous one.
 - 🚫 If the **root directory** being watched is deleted, the watcher is automatically removed, and a `rootRemoved` event is emitted.
 - ℹ️ The **root** is always a directory — even when watching a file, the root refers to its **parent folder**.
-
-
+- ⏸️ Use `overwatch.control.pause()` and `overwatch.control.resume()` to temporarily stop and restart the internal scanning engine without removing watchers.
+- 🔄 While paused, no file system changes are detected or emitted; resuming triggers an immediate scan and continues monitoring.
+- ✅ These control methods are safe to call multiple times and do not affect watcher registration or state.
 ___
 ## License
 This software is licensed under the **Nasriya Open License (NOL)**, version 1.0.

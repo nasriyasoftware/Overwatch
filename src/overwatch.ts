@@ -24,6 +24,8 @@ export type {
     WatchedData
 } from './docs/docs';
 
+export { Watcher } from "./watcher/Watcher";
+
 class Overwatch {
     readonly #_vom = new VirtualObjectManager();
     readonly #_watching = new Map<string, Watcher[]>();
@@ -55,7 +57,7 @@ class Overwatch {
             if (options === undefined) { return }
             if (typeof options !== 'object') { throw new TypeError('options must be an object.'); }
             const hasOwnProperty = atomix.dataTypes.record.hasOwnProperty.bind(atomix.dataTypes.record);
-            
+
             if ('include' in options && hasOwnProperty(options, 'include')) {
                 if (!Array.isArray(options.include)) { throw new TypeError('options.include (when provided) must be an array.'); }
                 for (const item of options.include) {
@@ -233,7 +235,6 @@ class Overwatch {
         }
     }
 
-
     /**
      * Registers a watcher for the specified directory path.
      *
@@ -278,6 +279,61 @@ class Overwatch {
         if (interval < 200) throw new RangeError(`detectionInterval must be at least 200ms`);
         this.#_vom.dispatchInterval = interval;
     }
+
+    /**
+     * Provides runtime control over the internal scanning engine.
+     *
+     * Use this property to pause or resume the file system scanning engine manually,
+     * without removing or altering existing watchers. This is useful for temporarily
+     * reducing resource usage during periods when file monitoring is not needed.
+     *
+     * Example:
+     * ```ts
+     * overwatch.control.pause();  // Temporarily stop scanning
+     * overwatch.control.resume(); // Resume scanning
+     * console.log(overwatch.control.isRunning()); // Check engine state
+     * ```
+     *
+     * This property is read-only and exposes the following methods:
+     * - `pause()` – Stops the internal scanning engine.
+     * - `resume()` – Starts or resumes scanning.
+     * - `isRunning()` – Returns a boolean indicating whether scanning is active.
+     */
+    readonly control = atomix.dataTypes.record.freeze({
+        /**
+         * Starts or resumes the internal scanning engine.
+         *
+         * This method triggers the engine responsible for detecting changes to all watched paths.
+         * If the engine is already running, calling this again has no effect.
+         *
+         * Use this to resume file system monitoring after calling `pause()`.
+         * @since v1.1.0
+         */
+        resume: () => this.#_vom.dispatch(),
+
+        /**
+         * Temporarily pauses the internal scanning engine.
+         *
+         * While paused, the system will not scan for changes or emit any file system events.
+         * Existing watchers remain intact and will resume functioning once `resume()` is called.
+         *
+         * Useful for temporarily reducing I/O load without removing watchers.
+         * @since v1.1.0
+         */
+        pause: () => this.#_vom.pause(),
+
+        /**
+         * Indicates whether the scanning engine is currently active.
+         *
+         * @returns `true` if the engine is currently scanning for changes,
+         *          `false` if it has been paused via `pause()`.
+         *
+         * You can use this to programmatically check the system state before pausing or resuming.
+         * @since v1.1.0
+         */
+        isRunning: () => this.#_vom.isRunning
+    });
+
 }
 
 const overwatch = new Overwatch;

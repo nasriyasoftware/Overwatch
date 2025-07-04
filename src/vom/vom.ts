@@ -95,11 +95,28 @@ class VirtualObjectManager {
      * Resets the dispatch interval for checking for changes in the virtual object structure.
      * If the dispatch interval is already running, it will be cleared and restarted.
      * The dispatch interval is used to check for changes such as added, removed, or renamed files and directories.
+     * @since v1.0.0
      */
     dispatch() {
         this.#_control.reset();
         this.#_control.start();
     }
+
+    /**
+     * Pauses the dispatch interval for checking for changes in the virtual object structure.
+     * The dispatch interval is used to check for changes such as added, removed, or renamed files and directories.
+     * @since v1.1.0
+     */
+    pause() {
+        this.#_control.reset();
+    }
+
+    /**
+     * Whether the VirtualObjectManager is currently running and checking for changes.
+     * @returns true if the VirtualObjectManager is running, false otherwise.
+     * @since v1.1.0
+     */
+    get isRunning() { return this.#_dispatcher.job !== null }
 
     /**
      * The interval (in milliseconds) at which the virtual object structure is checked for changes.
