@@ -333,7 +333,6 @@ class Overwatch {
          */
         isRunning: () => this.#_vom.isRunning
     });
-
 }
 
 const overwatch = new Overwatch;

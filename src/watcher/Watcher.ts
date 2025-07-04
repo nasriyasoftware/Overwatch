@@ -129,7 +129,6 @@ export class Watcher {
      */
     onUpdate(handler: OnWatchedDataUpdateHandler) {
         if (typeof handler !== 'function') throw new TypeError('onUpdate must be a function.');
-        if (handler.length !== 1) throw new TypeError('onUpdate must have a single argument.');
         this.#_userEvents.onUpdate = handler;
     }
 
@@ -137,10 +136,8 @@ export class Watcher {
      * Sets the handler for the "remove" event, which is called whenever a watched file or directory is removed.
      * @param handler The handler to call when a watched file or directory is removed. The handler must take a single argument, which is the path of the file or directory that was removed.
      */
-
     onRemove(handler: onWatchedDataRemoveHandler) {
         if (typeof handler !== 'function') throw new TypeError('onRemove must be a function.');
-        if (handler.length !== 1) throw new TypeError('onRemove must have a single argument.');
         this.#_userEvents.onRemove = handler;
     }
 
@@ -150,7 +147,6 @@ export class Watcher {
      */
     onRename(handler: onWatchedDataRenameHandler) {
         if (typeof handler !== 'function') throw new TypeError('onRename must be a function.');
-        if (handler.length !== 1) throw new TypeError('onRename must have a single arguments.');
         this.#_userEvents.onRename = handler;
     }
 
@@ -160,7 +156,6 @@ export class Watcher {
      */
     onAdd(handler: onWatchedDataRemoveHandler) {
         if (typeof handler !== 'function') throw new TypeError('onAdd must be a function.');
-        if (handler.length !== 1) throw new TypeError('onAdd must have a single argument.');
         this.#_userEvents.onAdd = handler;
     }
 
@@ -170,7 +165,6 @@ export class Watcher {
      */
     onChange(handler: onWatchedDataChangeHandler) {
         if (typeof handler !== 'function') throw new TypeError('onChange must be a function.');
-        if (handler.length > 1) throw new TypeError('onChange must have no more than a single argument.');
         this.#_userEvents.onChange = handler;
     }
 
