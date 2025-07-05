@@ -39,6 +39,12 @@ class Snapshot {
                         // File disappeared, skip it safely
                         continue;
                     }
+
+                    if ((error as any).code === 'EPERM') {
+                        console.warn(`[VOM] Skipping stat for "${filePath}" due to EPERM (permission denied).`);
+                        continue;
+                    }
+
                     throw error;
                 }
 
@@ -60,6 +66,11 @@ class Snapshot {
                 } catch (error) {
                     if ((error as any).code === 'ENOENT') {
                         // Folder disappeared, skip it safely
+                        continue;
+                    }
+
+                    if ((error as any).code === 'EPERM') {
+                        console.warn(`[VOM] Skipping stat for "${folderPath}" due to EPERM (permission denied).`);
                         continue;
                     }
                     throw error;
