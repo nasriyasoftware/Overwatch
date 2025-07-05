@@ -31,7 +31,17 @@ class Snapshot {
 
             for (const file of files) {
                 const filePath = path.join(path_, file.name);
-                const stats = await fs.promises.stat(filePath);
+                let stats: fs.Stats;
+                try {
+                    stats = await fs.promises.stat(filePath);
+                } catch (error) {
+                    if ((error as any).code === 'ENOENT') {
+                        // File disappeared, skip it safely
+                        continue;
+                    }
+                    throw error;
+                }
+
                 const watchedFile: WatchedFile = {
                     path: filePath,
                     name: file.name,
@@ -44,7 +54,17 @@ class Snapshot {
 
             for (const folder of folders) {
                 const folderPath = path.join(path_, folder.name);
-                const stats = await fs.promises.stat(folderPath);
+                let stats: fs.Stats;
+                try {
+                    stats = await fs.promises.stat(folderPath);
+                } catch (error) {
+                    if ((error as any).code === 'ENOENT') {
+                        // Folder disappeared, skip it safely
+                        continue;
+                    }
+                    throw error;
+                }
+
                 const watchedFolder: WatchedFolder = {
                     path: folderPath,
                     name: folder.name,
